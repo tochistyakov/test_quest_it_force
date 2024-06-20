@@ -1,0 +1,47 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>
+        <input
+          class="checkbox"
+          [type]="'checkbox'"
+          [checked]="isSelectedAll()"
+          [indeterminate]="isIndeterminate()"
+          (change)="selectAll($event)"
+        />
+      </th>
+      <th class="numChecked">
+        <span> {{ selected_ids().length ? 'Выбрано ' + selected_ids().length : 'Нет' }} </span>
+      </th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Имя</th>
+      <th>Сообщение</th>
+      <th>Статус</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (issue of issues(); track issue.id) {
+      <tr [ngClass]="[
+        issue.status === 'open' ? 'openIssue' : 'resolvedIssue',
+        isSelected(issue.id) ? 'selected' : ''
+        ]">
+        <td>
+          <input
+            class="checkbox"
+            type="checkbox"
+            [checked]="isSelected(issue.id)"
+            (change)="select($event, issue.id)"
+            [disabled]="issue.status !== 'open'"
+          />
+        </td>
+        <td>{{ issue.name }}</td>
+        <td>{{ issue.message }}</td>
+        <td>
+          <span [ngClass]="issue.status === 'open' ? 'openCircle' : 'resolvedCircle'"></span>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
